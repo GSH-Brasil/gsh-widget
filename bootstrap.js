@@ -13,7 +13,7 @@
     TTS_VOICE: "alloy",
     TTS_FORMAT: "mp3",
     STT_MODEL: "whisper-1",
-    MAX_IX: 15,
+    MAX_IX: 20,
     MAX_MS: 10 * 60 * 1000
   };
 
@@ -96,7 +96,7 @@
         <div>Left today:</div>
         <div class="gsh-row" style="gap:12px">
           <div title="interactions left"><div class="gsh-bar"><div id="gsh-barIx" class="gsh-fill"></div></div></div>
-          <div id="gsh-ixText">15 interactions</div>
+          <div id="gsh-ixText">20 interactions</div>
           <div title="minutes left"><div class="gsh-bar"><div id="gsh-barMin" class="gsh-fill"></div></div></div>
           <div id="gsh-minText">10 min</div>
           <div id="gsh-resetText" class="gsh-pill" title="Resets exactly 24h after first use">resets in 24h</div>
