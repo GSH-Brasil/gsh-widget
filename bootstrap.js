@@ -89,7 +89,7 @@
     <div class="gsh-header">
       <div class="gsh-left">
         <div class="gsh-dot"></div>
-        <div class="gsh-title">GSH – Virtual English Teacher</div>
+        <div class="gsh-title">GSH – Globy</div>
         <span class="gsh-pill" id="gsh-status">ready</span>
       </div>
       <div class="gsh-usage" id="gsh-usageBox" style="display:none;">
@@ -105,7 +105,7 @@
     </div>
 
     <div id="gsh-auth" style="padding:16px;display:none;gap:12px;flex-direction:column;">
-      <div class="gsh-tiny">Log in with your school email to use the virtual teacher.</div>
+      <div class="gsh-tiny">Log in with your school email to chat with Globy.</div>
       <div class="gsh-row" style="flex-wrap:wrap;gap:12px;align-items:flex-end;">
         <div style="display:flex;flex-direction:column;gap:6px;min-width:260px;">
           <label for="gsh-email">Email</label>
