@@ -140,7 +140,7 @@
 
     <div id="gsh-chat" style="display:none;">
       <div id="gsh-messages" class="gsh-messages"></div>
-      <div class="gsh-tiny">Tip: You can type or record in Spanish/Portuguese; the teacher will ALWAYS reply in ENGLISH with grammar fixes and a pronunciation tip.</div>
+      <div class="gsh-tiny">Tip: You can type or record in Spanish/Portuguese; Globy will ALWAYS reply in ENGLISH with grammar fixes and a pronunciation tip.</div>
       <div class="gsh-controls">
         <input id="gsh-text" type="text" placeholder="Type your question..." class="gsh-input"/>
         <div class="gsh-row">
