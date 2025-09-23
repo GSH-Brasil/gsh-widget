@@ -1,4 +1,4 @@
-/* GSH Virtual English Teacher — robust bootstrap (EN-only, self-mounting, with logs) */
+/* GSH Virtual English Teacher — robust bootstrap (EN-only, self-mounting, with logs) */ 
 (function(){
   if (window.__GSH_BOOTSTRAP_LOADED__) {
     console.log("[GSH bootstrap] already loaded — skipping");
@@ -75,7 +75,39 @@
 .gsh-btn{background:#1a2453;color:var(--ink);border:1px solid rgba(255,255,255,.15);border-radius:12px;padding:10px 14px;cursor:pointer}
 .gsh-btn:hover{background:#21306c}
 .gsh-tiny{font-size:12px;color:var(--muted);padding:0 12px 10px}
-.gsh-audio{display:flex;gap:6px;align-items:center}`;
+.gsh-audio{display:flex;gap:6px;align-items:center}
+
+/* ========== GSH: MOBILE USAGE LAYOUT FIX (apenas UI, sem tocar na lógica) ========== */
+/* Esconde o contador de "time left" (minutos) em qualquer largura */
+#gsh-minText { display: none !important; }
+
+/* No mobile, empilhar: barra azul (interactions) na 1ª linha; abaixo: "X interactions" + "resets in …" */
+@media (max-width: 600px) {
+  #gsh-usageBox .gsh-row { 
+    flex-wrap: wrap; 
+    align-items: center; 
+    gap: 8px;
+  }
+
+  /* Força a barra de INTERACTIONS a ocupar a linha inteira */
+  #gsh-usageBox [title="interactions left"] {
+    order: 1;
+    flex: 1 0 100%;
+  }
+  #gsh-ixText {
+    order: 2;
+    display: inline-block;
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: normal;       /* deixa quebrar para não cortar no celular */
+    word-break: break-word;
+  }
+  #gsh-resetText {
+    order: 3;
+  }
+}
+/* ================================================================================ */
+`;
     const style = document.createElement("style");
     style.id = "gsh-widget-style";
     style.textContent = css;
@@ -188,6 +220,17 @@
     const $newEmail = $('#gsh-newEmail'), $newPass = $('#gsh-newPass'), $add = $('#gsh-add'), $delEmail = $('#gsh-delEmail'), $del = $('#gsh-del'), $adminMsg = $('#gsh-adminMsg');
     const $messages = $('#gsh-messages'), $text = $('#gsh-text'), $send = $('#gsh-send'), $mic = $('#gsh-mic'), $clear = $('#gsh-clear'), $playAudio = $('#gsh-playAudio'), $stop = $('#gsh-stop'), $tts = $('#gsh-tts');
     let session = null;
+
+    /* === GSH: esconder bloco de "minutes" sem alterar lógica de cálculo === */
+    try {
+      if ($minText) $minText.style.display = 'none';
+      if ($barMin) {
+        const barContainer = $barMin.closest('.gsh-bar');
+        if (barContainer && barContainer.parentElement) {
+          barContainer.parentElement.style.display = 'none';
+        }
+      }
+    } catch(e){}
 
     function setStatus(s){ $status.textContent = s; }
     function addMessage(t, who){ const d=document.createElement('div'); d.className=`gsh-msg ${who}`; d.textContent=t; $messages.appendChild(d); $messages.scrollTop=$messages.scrollHeight; }
