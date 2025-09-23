@@ -141,7 +141,7 @@
       <div class="gsh-row" style="flex-wrap:wrap;gap:12px;align-items:flex-end;">
         <div style="display:flex;flex-direction:column;gap:6px;min-width:260px;">
           <label for="gsh-email">Email</label>
-          <input id="gsh-email" type="text" placeholder="student@globalspeak.email or admin@globalspeak.online" class="gsh-input"/>
+          <input id="gsh-email" type="email" autocapitalize="none" autocomplete="username" autocorrect="off" spellcheck="false" inputmode="email" placeholder="student@globalspeak.email or admin@globalspeak.online" class="gsh-input"/>
         </div>
         <div style="display:flex;flex-direction:column;gap:6px;min-width:200px;">
           <label for="gsh-pass">Password</label>
@@ -159,12 +159,12 @@
       </div>
       <div class="gsh-tiny">Add/Remove authorized students (domain <code>@globalspeak.email</code>).</div>
       <div class="gsh-row" style="flex-wrap:wrap;gap:8px;margin-top:8px;">
-        <input id="gsh-newEmail" type="text" placeholder="newstudent@globalspeak.email" class="gsh-input"/>
+        <input id="gsh-newEmail" type="email" autocapitalize="none" autocorrect="off" spellcheck="false" inputmode="email" placeholder="newstudent@globalspeak.email" class="gsh-input"/>
         <input id="gsh-newPass" type="text" placeholder="student password" class="gsh-input"/>
         <button id="gsh-add" class="gsh-btn">+ Add student</button>
       </div>
       <div class="gsh-row" style="flex-wrap:wrap;gap:8px;margin-top:8px;">
-        <input id="gsh-delEmail" type="text" placeholder="student@globalspeak.email" class="gsh-input"/>
+        <input id="gsh-delEmail" type="email" autocapitalize="none" autocorrect="off" spellcheck="false" inputmode="email" placeholder="student@globalspeak.email" class="gsh-input"/>
         <button id="gsh-del" class="gsh-btn">– Remove student</button>
       </div>
       <div id="gsh-adminMsg" class="gsh-tiny" style="margin-top:8px;"></div>
@@ -221,6 +221,19 @@
     const $messages = $('#gsh-messages'), $text = $('#gsh-text'), $send = $('#gsh-send'), $mic = $('#gsh-mic'), $clear = $('#gsh-clear'), $playAudio = $('#gsh-playAudio'), $stop = $('#gsh-stop'), $tts = $('#gsh-tts');
     let session = null;
 
+    /* === GSH: reforça atributos anti-capitularização e teclado correto === */
+    try {
+      [$email, $newEmail, $delEmail].forEach((el)=>{
+        if(!el) return;
+        el.setAttribute('type','email');
+        el.setAttribute('autocapitalize','none');
+        el.setAttribute('autocomplete','username');
+        el.setAttribute('autocorrect','off');
+        el.setAttribute('spellcheck','false');
+        el.setAttribute('inputmode','email');
+      });
+    } catch(_) {}
+
     /* === GSH: esconder bloco de "minutes" sem alterar lógica de cálculo === */
     try {
       if ($minText) $minText.style.display = 'none';
@@ -259,7 +272,8 @@
     }
 
     async function login(){
-      const email = $email.value.trim(); const password = $pass.value;
+      // ↓↓↓ força e-mail para minúsculas para evitar problema de "A" maiúsculo no iPhone
+      const email = $email.value.trim().toLowerCase(); const password = $pass.value;
       if(!email || !password) return alert('Fill in email and password.');
       setStatus('authenticating...');
       const r = await fetch(`${CONFIG.BACKEND_BASE_URL}/auth/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, password }) });
@@ -284,14 +298,14 @@
     }catch{ show('auth'); }
 
     $add.addEventListener('click', async ()=>{
-      const email = $newEmail.value.trim(), password = $newPass.value;
+      const email = $newEmail.value.trim().toLowerCase(), password = $newPass.value;
       if(!email || !password) return alert("Enter the student's email and password.");
       const r = await fetch(`${CONFIG.BACKEND_BASE_URL}/admin/addUser`, { method:'POST', headers:{ ...authHeader(), 'Content-Type':'application/json' }, body: JSON.stringify({ email, password }) });
       const data = await r.json();
       $adminMsg.textContent = data.ok ? `Student ${email} added.` : (data.error || 'Error');
     });
     $del.addEventListener('click', async ()=>{
-      const email = $delEmail.value.trim();
+      const email = $delEmail.value.trim().toLowerCase();
       if(!email) return alert("Enter the student's email.");
       const r = await fetch(`${CONFIG.BACKEND_BASE_URL}/admin/deleteUser`, { method:'POST', headers:{ ...authHeader(), 'Content-Type':'application/json' }, body: JSON.stringify({ email }) });
       const data = await r.json();
